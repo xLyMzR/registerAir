@@ -1,3 +1,8 @@
+//Objetivo: sistema capaz de cadastrar voos e passageiros conseguindo alocar os passageiros aos voos
+
+//Programador: Leonardo Mamede, 
+//Data de criação: 15/11/21
+//Ultima modificação: 26/11/21
 
 import java.util.Scanner;
 
@@ -9,9 +14,9 @@ public class SistemaAviao2 {
 	public static Scanner sc2 = new Scanner(System.in);
 	
 	//var global para delimitar quantidade máx de voos a serem cadastrados
-	public static int tamanhoDosVetores=3;
+	public static int tamanhoDosVetores=50;
 	//var global para delimitar quantidade máx de Passageiros a serem cadastrados
-	public static int qntDePassageirosCadastraveis= 4;
+	public static int qntDePassageirosCadastraveis= 50;
 	//var global para delimitar quantidade de passageiro já cadastrados
 	public static int qntDePassageirosCadastrados=0;
 	//var global para delimitar quantidade de voos já cadastrados
@@ -66,27 +71,27 @@ public class SistemaAviao2 {
 			//verifica se já existe um voo com esse codigo
 			if(buscarVoos(codigoDovoo)== -1) {
 			//if para verificarção e validação das informações a serem cadastradas
-			
-			if(quantidadeDeAssentos >0 && distanciaViagem > 0 && quantidadeDeAssentos > 0 && codigoDovoo >0) {
 				
-				codigosDosVoos[j]= codigoDovoo;
-				
-				qntdDeAssentos[j]=quantidadeDeAssentos;
-				
-				distanciasDasViagens[j]=distanciaViagem;
-
-				//espaçamento para saida
-				System.out.println("");
-				System.out.println("Cadastro do voo realizado com sucesso");
-				System.out.println("");
-				System.out.println("");
-				
-			}
-			else {
-				System.out.println("Verifique as informações erradas! ");
-				qntDeVoosCadastrados--;
-				
-			}
+				if(quantidadeDeAssentos >0 && distanciaViagem > 0 && quantidadeDeAssentos > 0 && codigoDovoo >0) {
+					
+					codigosDosVoos[j]= codigoDovoo;
+					
+					qntdDeAssentos[j]=quantidadeDeAssentos;
+					
+					distanciasDasViagens[j]=distanciaViagem;
+	
+					//espaçamento para saida
+					System.out.println("");
+					System.out.println("Cadastro do voo realizado com sucesso");
+					System.out.println("");
+					System.out.println("");
+					
+				}
+				else {
+					System.out.println("Verifique as informações erradas! ");
+					qntDeVoosCadastrados--;
+					
+				}
 			}
 			else {
 				System.out.println("======Codigo de voo já existente!!!======\n");
@@ -110,19 +115,19 @@ public class SistemaAviao2 {
 		newCode=sc.nextInt();
 		
 		//verifica se já existe esse codigo cadastrado
-		if(buscarPassageiro(newCode)==-1)
-		{
-		codigosDosPassageiros[j]=newCode;
-		nomesDosPassageiros[j] = nomePass;
-		
-		//espaçamento para saida
-		System.out.println("");
-		System.out.println("Cadastro do passageiro realizado com sucesso");
-		System.out.println("");
-		System.out.println("");
-		}
+		if(buscarPassageiro(newCode)==-1 && newCode>0)
+			{
+			codigosDosPassageiros[j]=newCode;
+			nomesDosPassageiros[j] = nomePass;
+			
+			//espaçamento para saida
+			System.out.println("");
+			System.out.println("Cadastro do passageiro realizado com sucesso");
+			System.out.println("");
+			System.out.println("");
+			}
 		else {
-			System.out.println("Codigo de Passageiro já existente");
+			System.out.println("Codigo de Passageiro já existente ou codigo invalido");
 			qntDePassageirosCadastrados--;
 		}
 		
@@ -257,9 +262,9 @@ public class SistemaAviao2 {
 	
 		int posicaoVoo = buscarVoos(codigoDoVoo);
 		
-		if(verificarPassageiroNosVoos(posicaoPassageiro)!= -1) {
+		if(verificarPassageiroNosVoos(posicaoPassageiro)!= -1 && codigosDosPassageiros[0]!=0) {
 			
-			if(posicaoVoo!= -1 && codigoDoPassageiro!= -1 && ocupacaoDosVoos[posicaoVoo]<qntdDeAssentos[posicaoVoo]) {
+			if(posicaoVoo!= -1 && codigoDoPassageiro!= -1) {
 					
 			
 					voosAlocados[posicaoPassageiro][posicaoVoo] = true;
@@ -320,7 +325,7 @@ public class SistemaAviao2 {
 			System.out.println("Apagando Passageiro: "+nomesDosPassageiros[idPass]);
 			//retirando o passageiro do voo em que foi alocado
 			
-			int vooDoPassageiro = buscarVooDoPassageiro(idPass);
+			int vooDoPassageiro = (idPass);
 			if(vooDoPassageiro!=-1) {
 				
 				voosAlocados[idPass][vooDoPassageiro]=false;
@@ -417,36 +422,38 @@ public class SistemaAviao2 {
 	//realizamos um calculo para pegar a media de ocupação entre os voos
 	//para podermos apresentar apenas os voos iguais ou acima das médias de ocupação
 	
-		if(qntdDeAssentos[0]!=0) {
-	for(int x=0; x<tamanhoDosVetores;x++) {
-		
-		if(ocupacaoDosVoos[x] >= mediaDeOcupacaoDosVoos && ocupacaoDosVoos[x]!=0) {
-			
-			System.out.println("\nVoo: "+codigosDosVoos[x]+"\nAssentos Ocupados: "+ocupacaoDosVoos[x]);
-			
+		if(qntdDeAssentos[0]!=0 && codigosDosPassageiros[0] != 0 && ocupacaoDosVoos[0] != 0) {
+				for(int x=0; x<tamanhoDosVetores;x++) {
+					
+					if(ocupacaoDosVoos[x] >= mediaDeOcupacaoDosVoos && ocupacaoDosVoos[x]!=0 && ocupacaoDosVoos[0] != 0) {
+						
+						System.out.println("\nVoo: "+codigosDosVoos[x]+"\nAssentos Ocupados: "+ocupacaoDosVoos[x]);
+						
+					}
+				
+				}
 		}
 		
-	}
-		}
 		else {
-			System.out.println("Nenhum voo cadastrado...");
+			System.out.println("Nenhum voo ou passageiro cadastrado/alocado...");
 		}
 	}
 	
 	//método para mostarVoos com menos ocupação de passageiros
 	public static void mostrarVoosComMenosPassageiros() {
-		if(qntdDeAssentos[0]!=0) {
-		for(int x=0; x<tamanhoDosVetores;x++) {
+		if(qntdDeAssentos[0]!=0 && codigosDosPassageiros[0] != 0 && ocupacaoDosVoos[0] != 0) {
+			for(int x=0; x<tamanhoDosVetores;x++) {
+				
+				if(ocupacaoDosVoos[x] <= mediaDeOcupacaoDosVoos && ocupacaoDosVoos[x]!=0) {
+					
+					System.out.println("\nVoo: "+codigosDosVoos[x]+"\nAssentos Ocupados: "+ocupacaoDosVoos[x]);
+					
+				}
 			
-			if(ocupacaoDosVoos[x] < mediaDeOcupacaoDosVoos && ocupacaoDosVoos[x]!=0) {
-				
-				System.out.println("\nVoo: "+codigosDosVoos[x]+"\nAssentos Ocupados: "+ocupacaoDosVoos[x]);
-				
 			}
 		}
-		}
 		else {
-			System.out.println("Nenhum voo cadastrado....");
+			System.out.println("Nenhum voo ou passageiro cadastrado/alocado...");
 		}
 	}
 	
@@ -520,28 +527,40 @@ public class SistemaAviao2 {
 		switch(optMenu) {
 		//cadastrarVoos
 		case 1:
-			//chama o método de cadastro de voos
+			
+			//int qntVooasAcadastrar representa quantos voos o usuario deseja cadastrar de uma vez 
 			int qntVoosAcadastrar=0;
+			//a variavel x serve como um contador dentro do while que está abaixo, permitindo a quantidaded de ciclos de execução do cadastro
+			//de acordo com o que o usuario desejar
 			int x=0;
+			
+			//entrada da quantidade de voos a cadastrar
 			System.out.println("Entre com a quantidade de voos que deseja cadastrar: ");
 			qntVoosAcadastrar=sc.nextInt();
 			//fazemos a verifição se a quantidade de voos que o usuario deseja cadastrar de uma vez é maior do que a capacidade máxima de cadastro de voos
 			if(qntVoosAcadastrar <=tamanhoDosVetores-qntDeVoosCadastrados && qntVoosAcadastrar>0)
 			{	
 				while(x<qntVoosAcadastrar) {
-					
+				
+					//Verifica se a quantidade de voos já cadastrados no sistema é menor que o limite do sistema
 				if(qntDeVoosCadastrados<tamanhoDosVetores ) {
+					//chama o método cadastrarVoos passando como parametro a qntDeVoosCadastrados caso o cadastro ocorra em sucesso
+					//e tambem para poder acessar a posição nos vetores dentro do método
 				cadastrarVoos(qntDeVoosCadastrados);
 				
+				//quantidade de voos cadastrados é aumentada após o cadastro ser concluido
 				qntDeVoosCadastrados++;
+				
+				//media da distancia de todos os voos cadastrados é calculada
 				mediaDeDistanciaDosVoos();
 				
 				}
 				
-				
+		
 				else {
 					System.out.println("Capacidade maxima de voos cadastrados!!");
 					qntDeVoosCadastrados--;
+					//caso 
 				}
 				 x++;
 				
@@ -589,7 +608,7 @@ public class SistemaAviao2 {
 		//Alocar Passageiros ao voo		
 		case 3:
 			//chama o método para alocamento de passageiros
-			if(qntDeVoosCadastrados>0) {
+			if(qntDeVoosCadastrados>0 && qntDePassageirosCadastrados>0) {
 			alocarPassageiros();
 			
 			//Armazenando a quantidade de passageiros de cadaa voo em um vetor
@@ -607,7 +626,7 @@ public class SistemaAviao2 {
 			
 			mediaDeOcupacaoDosVoos = mediaDeOcupacaoDosVoos/tamanhoDosVetores;}
 			else {
-				System.out.println("Nenhum voo Cadastrado!!!");
+				System.out.println("Nenhum voo ou passageiro cadastrados!!!");
 			}
 			break;
 				
